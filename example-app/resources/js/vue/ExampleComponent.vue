@@ -1,7 +1,7 @@
 <template>
     <div id="todoListContainer">
         <div id="heading">
-            <h1 id="title">To-do list</h1>
+            <h1 id="title">To-do list LV</h1>
 
             <!-- add item -->
             <add-item-frm
