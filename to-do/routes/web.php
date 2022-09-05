@@ -28,21 +28,12 @@ Auth::routes();
 Route::get('/home', [HomeController::class, 'index'])->name('home');
 Route::get('/', [HomeController::class, 'index'])->name('home');
 
-Route::get('/tasks', [ItemController::class, 'index']);
-Route::post('/task', [ItemController::class, 'store']);
-Route::delete('/task/{task}', [ItemController::class, 'destroy']);
-
 Route::get('/todos', [TodoController::class, 'index']);
 Route::post('/todo', [TodoController::class, 'store']);
 Route::delete('/todo/{todo}', [TodoController::class, 'destroy']);
 
 Route::get('/myTodos', [TodoController::class, 'todos']);
 Route::post('/assignTodo', [TodoController::class, 'assign']);
-
-
-Route::get('/submit', function () {
-  return view('submitTask');
-});
 
 Route::get('/submitTodo', function () {
   return view('submitTodo');
