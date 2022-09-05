@@ -1,6 +1,11 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
+use App\Http\Controllers\ItemController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\TodoController;
 
 /*
 |--------------------------------------------------------------------------
@@ -13,6 +18,60 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('app');
+// Route::get('/app', function () {
+//     return view('app');
+// });
+
+Route::auth();
+Auth::routes();
+
+Route::get('/home', [HomeController::class, 'index'])->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
+
+Route::get('/tasks', [ItemController::class, 'index']);
+Route::post('/task', [ItemController::class, 'store']);
+Route::delete('/task/{task}', [ItemController::class, 'destroy']);
+
+Route::get('/todos', [TodoController::class, 'index']);
+Route::post('/todo', [TodoController::class, 'store']);
+Route::delete('/todo/{todo}', [TodoController::class, 'destroy']);
+
+Route::get('/myTodos', [TodoController::class, 'todos']);
+Route::post('/assignTodo', [TodoController::class, 'assign']);
+
+
+Route::get('/submit', function () {
+  return view('submitTask');
+});
+
+Route::get('/submitTodo', function () {
+  return view('submitTodo');
+});
+
+Route::get('/users', function () {
+  return view('user');
+});
+
+
+Route::get('/assign', function () {
+  $users = DB::table('users')->get();
+  $list = $users->map(
+      function($place) {
+          return [
+              "label" => $place->name,
+              "value" => $place->id
+          ];
+      }
+  );
+
+  $todos = DB::table('todos')->get();
+  $list_todos = $todos->map(
+      function($place) {
+          return [
+              "label" => $place->title,
+              "value" => $place->id
+          ];
+      }
+  );
+  return view('assign',['users' => $list, 'todos' => $list_todos]);
 });
